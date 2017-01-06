@@ -13,7 +13,28 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <set>
+#include <vector>
+#include <sstream>
 using namespace std;
+
+//struct MyStringLengthCompare
+//{
+//    bool operator () (const std::string & p_lhs, const std::string & p_rhs)
+//    {
+//        const size_t lhsLength = p_lhs.length() ;
+//        const size_t rhsLength = p_rhs.length() ;
+//
+//        if(lhsLength == rhsLength)
+//        {
+//            return (p_lhs < p_rhs) ; // when two strings have the same
+//                                     // length, defaults to the normal
+//                                     // string comparison
+//        }
+//
+//        return (lhsLength < rhsLength) ; // compares with the length
+//    }
+//} ;
 
 bool isCharOfWord(char c) {
 	if (isalpha(c) || c == '-' || c == '\'') {
@@ -27,6 +48,19 @@ void writeDocWordCount(ofstream &outFile, string inputFileName, string word, int
 	outFile << "<" + inputFileName + ","
 			<< word + ","
 			<< to_string(count) + ">\n";
+}
+
+vector<string> split(string toSplit, char delim) {
+	stringstream toSplitStream;
+	string token;
+	vector<string> tokens;
+
+	toSplitStream.str(toSplit);
+	while(getline(toSplitStream, token, delim)) {
+		tokens.push_back(token);
+	}
+
+	return tokens;
 }
  
 int main(int argc, char *argv[]) {
@@ -66,10 +100,43 @@ int main(int argc, char *argv[]) {
 	/*
 	 * SORT phase
 	 */
+	map<string, map<string, string>> wordsMap;
+	map<string,string> *docsMap;
+	string fileName;
+	//string word;
+	string count;
+
+	// SET NOT GOOD! ONLY UNIQUES. TRY USING STRUCT
+	set<string> stringSet;
+
 	inputFile.open("mapped1.txt");
 	inputFile >> noskipws;
 	outFile.open("sorted.txt");
 
+	while(getline(inputFile, line)) {
+		//remove angular brackets
+		line.erase(0,1);
+		line.erase(line.length() - 1, 1);
+
+		stringSet.insert(line);
+//		vector<string> tokens = split(line, ',');
+//		fileName = tokens.at(0);
+//		word = tokens.at(1);
+//		count = tokens.at(2);
+//
+//		docsMap = new map<string,string>();
+//		if (wordsMap.find(word) == wordsMap.end()) {
+//			wordsMap.insert(pair<string, map<string,string>>(word, *docsMap));
+//		}
+//
+//		wordsMap[word].insert(pair<string,string>(fileName, count));
+//
+//		cout << wordsMap[word][fileName];
+	}
+
+	for(string str : stringSet) {
+	  cout << str << endl;
+	}
 
 
 
